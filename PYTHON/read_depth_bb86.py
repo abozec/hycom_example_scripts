@@ -20,7 +20,7 @@ idm = 101 ; jdm = 101  ## size of the domain
 
 ## Read depth
 filet='depth_BB86_02_python.a'
-ivar=1 ## record index 
+ivar=1 ## record index
 bathy=sub_var2(io+'topo/'+filet,idm,jdm,ivar)
 
 levels2=np.linspace(4000,5000,12)
@@ -30,4 +30,17 @@ m = axs[0].contourf(bathy, cmap='Mako', extend='max',levels=levels2)
 fig.colorbar(m, loc='b')
 plot.show()
 
+## read relax interface depth
+filer='relax_int_BB86.a'
+kdm=3
+intd=np.zeros([jdm,idm,kdm])
+for k in np.arange(kdm):
+    intd[:,:,k]=sub_var2(io+'../relax/010/'+filer,idm,jdm,k+1)
 
+# convert intd in meters
+intd=intd/9806.
+## plot
+fig, axs = plot.subplots(nrows=1,width='10cm')
+axs[0].plot(intd[:,50,:],legend='lr',cycle='default')
+axs[0].format(title='Interface depths (m) BB86')
+plot.show()
